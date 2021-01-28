@@ -81,7 +81,7 @@ public abstract class BleScanPresenter implements BluetoothAdapter.LeScanCallbac
         mScanTimeout = timeOut;
         mBleScanPresenterImp = bleScanPresenterImp;
 
-        mHandlerThread = new HandlerThread(BleScanPresenter.class.getSimpleName());
+        mHandlerThread = new HandlerThread(BleScanPresenter.class.getSimpleName());//子线程
         mHandlerThread.start();
         mHandler = new ScanHandler(mHandlerThread.getLooper(), this);
         mHandling = true;
@@ -134,13 +134,12 @@ public abstract class BleScanPresenter implements BluetoothAdapter.LeScanCallbac
                 return;
             }
         }
-
         correctDeviceAndNextStep(bleDevice);
     }
 
 
     private void correctDeviceAndNextStep(final BleDevice bleDevice) {
-        if (mNeedConnect) {
+        if (mNeedConnect) {// 自动连接
             BleLog.i("devices detected  ------"
                     + "  name:" + bleDevice.getName()
                     + "  mac:" + bleDevice.getMac()
